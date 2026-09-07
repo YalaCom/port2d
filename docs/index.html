@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Причал — Port Reseller</title>
+  <title>Причал</title>
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; background: #0c1218; height: 100%; width: 100%; font-family: Tahoma, Geneva, sans-serif; }
-    #boot { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #ffe7a3; z-index: 5; font-size: 16px; text-align: center; padding: 24px; }
-    #game-root { width: 100%; height: 100%; }
+    #boot { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #ffe7a3; z-index: 50; font-size: 16px; text-align: center; padding: 24px; }
+    #game-root, #ui-root { width: 100%; height: 100%; }
     #ui-root { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
     #ui-root button, #ui-root input { pointer-events: auto; }
-    .hud { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
+    .hud { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
     .chip { background: #3a2918ee; color: #f4e6c1; border: 3px solid #8b5a2b; padding: 8px 10px; font-size: 13px; line-height: 1.4; box-shadow: 0 3px 0 #1a1008; }
     .hud-right { margin-left: auto; display: flex; gap: 8px; }
-    .hint { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); background: #1a1008dd; color: #f4e6c1; border: 3px solid #c9a36a; padding: 10px 14px; font-size: 13px; max-width: min(640px, 92vw); text-align: center; line-height: 1.5; }
+    .hint { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); background: #1a1008dd; color: #f4e6c1; border: 3px solid #c9a36a; padding: 10px 14px; font-size: 13px; max-width: min(640px, 92vw); text-align: center; }
     .modal-back { position: absolute; inset: 0; background: #00000088; display: flex; align-items: center; justify-content: center; pointer-events: auto; }
     .modal { background: #2b1d10; color: #f4e6c1; border: 4px solid #c9a36a; width: min(720px, 94vw); max-height: 88vh; overflow: auto; padding: 16px; box-shadow: 0 8px 0 #1a1008; }
     .modal h2 { margin: 0 0 12px; font-size: 18px; color: #ffe7a3; }
@@ -23,11 +23,10 @@
     .good { display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: center; background: #3e2a16; border: 2px solid #7a4e24; padding: 8px; }
     .ico { width: 24px; height: 24px; border: 1px solid #1a1008; }
     button.px { background: #6b3f18; color: #ffe7a3; border: 3px solid #c9a36a; font-family: inherit; font-size: 13px; padding: 8px 10px; cursor: pointer; }
-    button.px:hover { background: #8a5420; }
     button.px.ghost { background: #2b1d10; }
     button.px.danger { background: #5a1d16; }
     input.px { background: #1a1008; color: #ffe7a3; border: 2px solid #c9a36a; font-family: inherit; font-size: 14px; padding: 6px; width: 80px; }
-    .log { background: #1a1008; padding: 8px; min-height: 48px; font-size: 13px; line-height: 1.5; }
+    .log { background: #1a1008; padding: 8px; min-height: 48px; font-size: 13px; }
     .toast { position: absolute; top: 64px; left: 50%; transform: translateX(-50%); background: #1a1008; color: #ffe7a3; border: 3px solid #c9a36a; padding: 8px 12px; font-size: 14px; pointer-events: none; }
     .interact-btn { position: absolute; left: 50%; bottom: 64px; transform: translateX(-50%); pointer-events: auto; }
     .enter-prompt { font-size: 11px; color: #9ad0a0; }
@@ -38,8 +37,46 @@
   <div id="boot">Загрузка «Причала»…</div>
   <div id="game-root"></div>
   <div id="ui-root"></div>
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/phaser@3.80.1/dist/phaser.min.js'"></script>
-  <script src="./game-a.js"></script>
-  <script src="./game-b.js"></script>
+  <script>
+  (function () {
+    function msg(t) { var e = document.getElementById("boot"); if (e) e.innerHTML = t; }
+    function fail(t) { msg('<div id="err">' + t + "<\/div>"); }
+    window.addEventListener("error", function (ev) { fail("Ошибка: " + (ev.message || ev)); });
+    function load(src, ms) {
+      return new Promise(function (ok, bad) {
+        var done = false;
+        var s = document.createElement("script");
+        s.src = src;
+        s.onload = function () { if (!done) { done = true; ok(); } };
+        s.onerror = function () { if (!done) { done = true; bad(new Error(src)); } };
+        document.head.appendChild(s);
+        setTimeout(function () { if (!done) { done = true; bad(new Error("timeout " + src)); } }, ms || 8000);
+      });
+    }
+    var PHASER = [
+      "https://unpkg.com/phaser@3.80.1/dist/phaser.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js",
+      "https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"
+    ];
+    var GAME = [
+      "./game.js",
+      "https://cdn.jsdelivr.net/gh/YalaCom/port2d@main/docs/game.js"
+    ];
+    (async function () {
+      msg("Загрузка движка…");
+      for (var i = 0; i < PHASER.length && !window.Phaser; i++) {
+        msg("Движок " + (i + 1) + "/" + PHASER.length + "…");
+        try { await load(PHASER[i], 8000); } catch (e) {}
+      }
+      if (!window.Phaser) { fail("Не загрузился Phaser. Нужен интернет."); return; }
+      msg("Загрузка игры…");
+      var ok = false;
+      for (var j = 0; j < GAME.length; j++) {
+        try { await load(GAME[j], 8000); ok = true; break; } catch (e) {}
+      }
+      if (!ok) fail("Не загрузился game.js. Обновите страницу через минуту (Ctrl+F5).");
+    })();
+  })();
+  </script>
 </body>
 </html>
