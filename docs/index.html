@@ -7,79 +7,60 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@600;800&display=swap" rel="stylesheet" />
   <style>
-    :root { --wood:#6b3f18; --ink:#2a1a10; --paper:#f4e6c1; --gold:#ffe7a3; --edge:#c9a36a; }
-    html, body { margin:0; padding:0; overflow:hidden; height:100%; width:100%; background:#0b1a22; font-family:Nunito, Tahoma, sans-serif; }
-    #boot { position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; color:var(--gold); z-index:50; text-align:center; padding:24px; background:radial-gradient(circle at 50% 30%, #1d4a5e 0%, #0b1a22 70%); }
-    #boot h1 { font-family:"Press Start 2P", monospace; font-size:22px; line-height:1.6; margin:0; text-shadow:3px 3px 0 #081016; }
-    #boot .sub { opacity:.85; max-width:420px; }
-    #game-root { width:100%; height:100%; image-rendering:pixelated; }
-    #ui-root { position:fixed; inset:0; pointer-events:none; z-index:20; }
-    #ui-root button, #ui-root input { pointer-events:auto; }
-    .hud { position:absolute; top:10px; left:10px; right:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:flex-start; }
-    .chip { background:linear-gradient(#4a3018ee,#2b1d10ee); color:var(--paper); border:3px solid var(--edge); padding:8px 10px; font-size:14px; line-height:1.35; box-shadow:0 4px 0 #1a1008, inset 0 1px 0 #c9a36a55; }
-    .chip b { color:var(--gold); }
-    .hud-right { margin-left:auto; display:flex; gap:8px; }
-    .hint { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); background:#1a1008ee; color:var(--paper); border:3px solid var(--edge); padding:10px 14px; font-size:14px; max-width:min(680px,92vw); text-align:center; box-shadow:0 4px 0 #0008; }
-    .modal-back { position:absolute; inset:0; background:#00000088; display:flex; align-items:center; justify-content:center; pointer-events:auto; }
-    .modal { background:repeating-linear-gradient(0deg,#3a2716 0 2px,#332112 2px 4px); color:var(--paper); border:5px solid var(--edge); width:min(740px,94vw); max-height:88vh; overflow:auto; padding:18px; box-shadow:0 10px 0 #1a1008, inset 0 0 0 3px #6b3f18; }
-    .modal h2 { margin:0 0 12px; color:var(--gold); font-family:"Press Start 2P", monospace; line-height:1.5; font-size:13px; }
-    .modal p, .modal li { font-size:15px; line-height:1.55; }
-    .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-    .goods { display:grid; gap:8px; margin:10px 0; }
-    .good { display:grid; grid-template-columns:32px 1fr auto; gap:8px; align-items:center; background:#2b1d10cc; border:2px solid #7a4e24; padding:8px; }
-    .ico { width:28px; height:28px; border:2px solid #1a1008; }
-    button.px { background:linear-gradient(#8a5420,#6b3f18); color:var(--gold); border:3px solid var(--edge); font-family:inherit; font-size:14px; font-weight:800; padding:8px 12px; cursor:pointer; box-shadow:0 3px 0 #1a1008; }
-    button.px.ghost { background:#2b1d10; }
-    button.px.danger { background:linear-gradient(#7a2a20,#5a1d16); }
-    input.px { background:#1a1008; color:var(--gold); border:2px solid var(--edge); font-family:inherit; font-size:15px; padding:6px; width:84px; }
-    .log { background:#1a1008; padding:8px; min-height:48px; font-size:14px; }
-    .toast { position:absolute; top:70px; left:50%; transform:translateX(-50%); background:#1a1008; color:var(--gold); border:3px solid var(--edge); padding:8px 12px; font-size:15px; pointer-events:none; }
-    .interact-btn { position:absolute; left:50%; bottom:70px; transform:translateX(-50%); pointer-events:auto; }
-    .enter-prompt { font-size:11px; color:#9ad0a0; }
-    #err { color:#ffb4a8; white-space:pre-wrap; max-width:560px; }
+    html,body{margin:0;padding:0;overflow:hidden;height:100%;width:100%;background:#0b1a22;font-family:Nunito,Tahoma,sans-serif}
+    #boot{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#ffe7a3;z-index:50;text-align:center;padding:24px;background:radial-gradient(circle at 50% 30%,#1d4a5e 0%,#0b1a22 70%)}
+    #boot h1{font-family:"Press Start 2P",monospace;font-size:22px;line-height:1.6;margin:0;text-shadow:3px 3px 0 #081016}
+    #game-root{width:100%;height:100%;image-rendering:pixelated}
+    #ui-root{position:fixed;inset:0;pointer-events:none;z-index:20}
+    #ui-root button,#ui-root input{pointer-events:auto}
+    .hud{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:8px;flex-wrap:wrap}
+    .chip{background:#3a2918ee;color:#f4e6c1;border:3px solid #c9a36a;padding:8px 10px;font-size:14px;box-shadow:0 4px 0 #1a1008}
+    .hud-right{margin-left:auto;display:flex;gap:8px}
+    .hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:#1a1008ee;color:#f4e6c1;border:3px solid #c9a36a;padding:10px 14px;font-size:14px;max-width:min(680px,92vw);text-align:center}
+    .modal-back{position:absolute;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;pointer-events:auto}
+    .modal{background:#2b1d10;color:#f4e6c1;border:5px solid #c9a36a;width:min(740px,94vw);max-height:88vh;overflow:auto;padding:18px;box-shadow:0 10px 0 #1a1008}
+    .modal h2{margin:0 0 12px;color:#ffe7a3;font-family:"Press Start 2P",monospace;font-size:13px;line-height:1.5}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .goods{display:grid;gap:8px;margin:10px 0}
+    .good{display:grid;grid-template-columns:32px 1fr auto;gap:8px;align-items:center;background:#3e2a16;border:2px solid #7a4e24;padding:8px}
+    .ico{width:28px;height:28px;border:2px solid #1a1008}
+    button.px{background:#6b3f18;color:#ffe7a3;border:3px solid #c9a36a;font-family:inherit;font-size:14px;font-weight:800;padding:8px 12px;cursor:pointer}
+    button.px.ghost{background:#2b1d10}button.px.danger{background:#5a1d16}
+    input.px{background:#1a1008;color:#ffe7a3;border:2px solid #c9a36a;font-size:15px;padding:6px;width:84px}
+    .log{background:#1a1008;padding:8px;min-height:48px}
+    .toast{position:absolute;top:70px;left:50%;transform:translateX(-50%);background:#1a1008;color:#ffe7a3;border:3px solid #c9a36a;padding:8px 12px;pointer-events:none}
+    .interact-btn{position:absolute;left:50%;bottom:70px;transform:translateX(-50%);pointer-events:auto}
+    .enter-prompt{font-size:11px;color:#9ad0a0}
+    #err{color:#ffb4a8;white-space:pre-wrap;max-width:560px}
   </style>
 </head>
 <body>
-  <div id="boot">
-    <h1>ПРИЧАЛ</h1>
-    <div class="sub">Пиксельный порт · утро, корабли, торг</div>
-    <div id="boot-msg">Загрузка…</div>
-  </div>
+  <div id="boot"><h1>ПРИЧАЛ</h1><div id="boot-msg">Загрузка…</div></div>
   <div id="game-root"></div>
   <div id="ui-root"></div>
   <script>
   (function () {
-    function msg(t) { var e = document.getElementById("boot-msg"); if (e) e.textContent = t; }
-    function fail(t) { var e = document.getElementById("boot"); if (e) e.innerHTML = '<div id="err">' + t + "<\/div>"; }
-    window.addEventListener("error", function (ev) { fail("Ошибка: " + (ev.message || ev)); });
-    function loadScript(src, ms) {
-      return new Promise(function (ok, bad) {
-        var done = false;
-        var s = document.createElement("script");
-        s.src = src;
-        s.onload = function () { if (!done) { done = true; ok(); } };
-        s.onerror = function () { if (!done) { done = true; bad(new Error(src)); } };
-        document.head.appendChild(s);
-        setTimeout(function () { if (!done) { done = true; bad(new Error("timeout " + src)); } }, ms || 10000);
-      });
-    }
-    var PHASER = [
-      "https://unpkg.com/phaser@3.80.1/dist/phaser.min.js",
-      "https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js",
-      "https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"
-    ];
-    (async function () {
+    function msg(t){var e=document.getElementById("boot-msg");if(e)e.textContent=t;}
+    function fail(t){var e=document.getElementById("boot");if(e)e.innerHTML='<div id="err">'+t+"<\/div>";}
+    window.addEventListener("error",function(ev){fail("Ошибка: "+(ev.message||ev));});
+    function loadScript(src,ms){return new Promise(function(ok,bad){var done=false,s=document.createElement("script");s.src=src;s.onload=function(){if(!done){done=true;ok();}};s.onerror=function(){if(!done){done=true;bad(new Error(src));}};document.head.appendChild(s);setTimeout(function(){if(!done){done=true;bad(new Error("timeout"));}},ms||10000);});}
+    function loadText(src){return fetch(src,{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(src);return r.text();});}
+    var PHASER=["https://unpkg.com/phaser@3.80.1/dist/phaser.min.js","https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js","https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"];
+    (async function(){
       msg("Движок…");
-      for (var i = 0; i < PHASER.length && !window.Phaser; i++) {
-        try { await loadScript(PHASER[i], 10000); } catch (e) {}
-      }
-      if (!window.Phaser) { fail("Не загрузился Phaser. Нужен интернет."); return; }
-      msg("Пиксель-арт…");
-      try { await loadScript("./art.js", 12000); }
-      catch (e) { fail("Не загрузился art.js. Ctrl+F5."); return; }
-      msg("Мир порта…");
-      try { await loadScript("./game.js", 12000); }
-      catch (e) { fail("Не загрузился game.js. Обновите страницу (Ctrl+F5)."); }
+      for(var i=0;i<PHASER.length&&!window.Phaser;i++){try{await loadScript(PHASER[i],10000);}catch(e){}}
+      if(!window.Phaser){fail("Не загрузился Phaser. Нужен интернет.");return;}
+      msg("Мир…");
+      try{
+        await loadScript("./art.js",8000);
+        await loadScript("./game.js",8000);
+        return;
+      }catch(e){}
+      try{
+        var a=await loadText("./game-a.js");
+        var b=await loadText("./game-b.js");
+        (0,eval)(a+"\n"+b);
+      }catch(e){fail("Не собрался код: "+(e&&e.message?e.message:e));}
     })();
   })();
   </script>
