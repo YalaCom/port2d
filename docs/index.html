@@ -36,7 +36,7 @@
 <body>
   <div id="boot">
     <h1>ПРИЧАЛ</h1>
-    <div>Пиксельный порт · клик, чтобы идти</div>
+    <div>Пиксельный порт · клик по земле, чтобы идти</div>
     <div id="boot-msg">Загрузка…</div>
   </div>
   <div id="game-root"></div>
@@ -47,7 +47,7 @@
     function fail(t) { var e = document.getElementById("boot"); if (e) e.innerHTML = '<div id="err">' + t + "<\/div>"; }
     window.addEventListener("error", function (ev) { fail("Ошибка: " + (ev.message || ev)); });
     function loadText(url) {
-      return fetch(url + "?v=map3", { cache: "no-store" }).then(function (r) {
+      return fetch(url + "?v=map4", { cache: "no-store" }).then(function (r) {
         if (!r.ok) throw new Error(url + " " + r.status);
         return r.text();
       });
@@ -73,14 +73,11 @@
         try { await loadScript(PHASER[i], 8000); } catch (e) {}
       }
       if (!window.Phaser) { fail("Не загрузился Phaser. Нужен интернет."); return; }
-      msg("Карта и пиксель-арт…");
+      msg("Мир порта…");
       try {
         var a = await loadText("./game-a.js");
-        var a2 = await loadText("./game-a2.js");
         var b = await loadText("./game-b.js");
-        var b2 = await loadText("./game-b2.js");
-        msg("Запуск мира…");
-        (0, eval)(a + a2 + "\n" + b + b2);
+        (0, eval)(a + "\n" + b);
       } catch (e) {
         fail("Не собрался код: " + (e && e.message ? e.message : e));
       }
