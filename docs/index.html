@@ -47,7 +47,7 @@
     function fail(t) { var e = document.getElementById("boot"); if (e) e.innerHTML = '<div id="err">' + t + "<\/div>"; }
     window.addEventListener("error", function (ev) { fail("Ошибка: " + (ev.message || ev)); });
     function loadText(url) {
-      return fetch(url + "?v=life1", { cache: "no-store" }).then(function (r) {
+      return fetch(url + "?v=life2", { cache: "no-store" }).then(function (r) {
         if (!r.ok) throw new Error(url + " " + r.status);
         return r.text();
       });
@@ -81,7 +81,7 @@
         var life = "";
         try { life = await loadText("./game-life.js"); } catch (e) {}
         var b = await loadText("./game-b.js");
-        if (life) b = b.replace(/\}\)\(\);\s*$/, life + "\n})();");
+        if (life) b = b.replace("try{new Phaser.Game", life + "\ntry{new Phaser.Game");
         (0, eval)(a + "\n" + art + "\n" + b);
       } catch (e) {
         fail("Не собрался код: " + (e && e.message ? e.message : e));
