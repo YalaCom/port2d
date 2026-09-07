@@ -7,7 +7,7 @@
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; background: #0c1218; height: 100%; width: 100%; font-family: Tahoma, Geneva, sans-serif; }
     #boot { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #ffe7a3; z-index: 50; font-size: 16px; text-align: center; padding: 24px; }
-    #game-root, #ui-root { width: 100%; height: 100%; }
+    #game-root { width: 100%; height: 100%; }
     #ui-root { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
     #ui-root button, #ui-root input { pointer-events: auto; }
     .hud { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
@@ -42,7 +42,7 @@
     function msg(t) { var e = document.getElementById("boot"); if (e) e.innerHTML = t; }
     function fail(t) { msg('<div id="err">' + t + "<\/div>"); }
     window.addEventListener("error", function (ev) { fail("Ошибка: " + (ev.message || ev)); });
-    function load(src, ms) {
+    function loadScript(src, ms) {
       return new Promise(function (ok, bad) {
         var done = false;
         var s = document.createElement("script");
@@ -53,28 +53,50 @@
         setTimeout(function () { if (!done) { done = true; bad(new Error("timeout " + src)); } }, ms || 8000);
       });
     }
+    function loadText(urls) {
+      return (async function () {
+        var last;
+        for (var i = 0; i < urls.length; i++) {
+          try {
+            var r = await fetch(urls[i], { cache: "no-store" });
+            if (!r.ok) throw new Error(urls[i] + " " + r.status);
+            return await r.text();
+          } catch (e) { last = e; }
+        }
+        throw last || new Error("fetch");
+      })();
+    }
     var PHASER = [
       "https://unpkg.com/phaser@3.80.1/dist/phaser.min.js",
       "https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js",
       "https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"
     ];
-    var GAME = [
-      "./game.js",
-      "https://cdn.jsdelivr.net/gh/YalaCom/port2d@main/docs/game.js"
+    var A = [
+      "./game-a.js",
+      "https://cdn.jsdelivr.net/gh/YalaCom/port2d@main/docs/game-a.js",
+      "https://raw.githubusercontent.com/YalaCom/port2d/main/docs/game-a.js"
+    ];
+    var B = [
+      "./game-b.js",
+      "https://cdn.jsdelivr.net/gh/YalaCom/port2d@main/docs/game-b.js",
+      "https://raw.githubusercontent.com/YalaCom/port2d/main/docs/game-b.js"
     ];
     (async function () {
       msg("Загрузка движка…");
       for (var i = 0; i < PHASER.length && !window.Phaser; i++) {
         msg("Движок " + (i + 1) + "/" + PHASER.length + "…");
-        try { await load(PHASER[i], 8000); } catch (e) {}
+        try { await loadScript(PHASER[i], 8000); } catch (e) {}
       }
-      if (!window.Phaser) { fail("Не загрузился Phaser. Нужен интернет."); return; }
-      msg("Загрузка игры…");
-      var ok = false;
-      for (var j = 0; j < GAME.length; j++) {
-        try { await load(GAME[j], 8000); ok = true; break; } catch (e) {}
+      if (!window.Phaser) { fail("Не загрузился Phaser.\nНужен интернет."); return; }
+      msg("Загрузка кода игры…");
+      try {
+        var a = await loadText(A);
+        var b = await loadText(B);
+        msg("Запуск мира…");
+        (0, eval)(a + "\n" + b);
+      } catch (e) {
+        fail("Не собрался код игры: " + (e && e.message ? e.message : e));
       }
-      if (!ok) fail("Не загрузился game.js. Обновите страницу через минуту (Ctrl+F5).");
     })();
   })();
   </script>
