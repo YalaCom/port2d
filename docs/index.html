@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Причал</title>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #0c1218; overflow: hidden; font-family: Tahoma, sans-serif; }
+    #game-root { width: 100%; height: 100%; }
+    #ui { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
+    #ui button, #ui input { pointer-events: auto; }
+    .hud { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip, .hint, .toast, .modal, button.px { background: #2b1d10; color: #f4e6c1; border: 3px solid #c9a36a; font-size: 13px; }
+    .chip { padding: 6px 8px; }
+    .hint { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); padding: 8px 12px; max-width: 92vw; text-align: center; }
+    .toast { position: absolute; top: 56px; left: 50%; transform: translateX(-50%); padding: 8px 12px; }
+    .back { position: absolute; inset: 0; background: #0008; display: flex; align-items: center; justify-content: center; pointer-events: auto; }
+    .modal { width: min(640px, 94vw); max-height: 86vh; overflow: auto; padding: 14px; }
+    .modal h2 { margin: 0 0 8px; font-size: 16px; color: #ffe7a3; }
+    .good { display: flex; justify-content: space-between; gap: 8px; align-items: center; background: #3e2a16; border: 2px solid #7a4e24; padding: 8px; margin: 6px 0; }
+    button.px { padding: 7px 10px; cursor: pointer; }
+    button.px.ghost { background: #1a1008; }
+    input.px { background: #1a1008; color: #ffe7a3; border: 2px solid #c9a36a; width: 72px; padding: 4px; }
+    .row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .act { position: absolute; left: 50%; bottom: 56px; transform: translateX(-50%); pointer-events: auto; }
+  </style>
+</head>
+<body>
+  <div id="game-root"></div>
+  <div id="ui"></div>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+  <script src="./game.js"></script>
+</body>
+</html>
