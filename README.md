@@ -1,33 +1,20 @@
-# Причал (Port Reseller)
+# Причал
 
-Пиксельная офлайн-игра про перекупа в маленьком порту. Кликай по карте, торгуйся с капитанами, выставляй товар на палатку, спи — и не проспи отлив.
+Пиксельная игра про перекупа в порту.
 
-**Репозиторий:** https://github.com/YalaCom/port2d
-**GitHub Pages:** https://yalacom.github.io/port2d/
+## Играть сейчас
 
-## Запуск
+1. Откройте файл [docs/index.html](docs/index.html) в репозитории → кнопка **Raw** не нужна.
+2. Лучше: скачайте `docs/index.html` и откройте в Chrome / Safari двойным тапом.
+3. После включения Pages: https://yalacom.github.io/port2d/
 
-```bash
-npm i
-npm run dev
-```
-
-Игра откроется на `http://localhost:5173/port2d/`.
+Игра — один HTML-файл + Phaser с CDN. `npm` не нужен.
 
 ## Как играть
 
-1. ЛКМ по земле — персонаж обходит бочки и идёт.
-2. Корабль — закуп и торг.
-3. Палатка — цена и витрина. NPC покупают сами с 08 до 18.
-4. Дом → кровать — отчёт дня и новый корабль.
-5. Таверна — слухи. Меню — сейв JSON.
-
-`E` действие, WASD опционально, Esc закрыть окно.
-
-Сейв: `prichal_save_v1` в localStorage.
+ЛКМ по карте — идти. Корабль — купить. Палатка — выставить цену. Дом — спать.
 
 ## Pages
 
-Settings → Pages → Source: GitHub Actions. `base` в Vite = `/port2d/`.
-
-Арт — процедурные пиксель-плейсхолдеры 16×16. Без ассетов Stardew Valley.
+Settings → Pages → Deploy from a branch → `main` / `docs`
+или Source: GitHub Actions.
