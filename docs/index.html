@@ -50,7 +50,7 @@
     function fail(t) { var e = document.getElementById("boot"); if (e) e.innerHTML = '<div id="err">' + t + "<\/div>"; }
     window.addEventListener("error", function (ev) { fail("Ошибка: " + (ev.message || ev)); });
     function loadText(url) {
-      return fetch(url + "?v=art3", { cache: "no-store" }).then(function (r) {
+      return fetch(url + "?v=art4", { cache: "no-store" }).then(function (r) {
         if (!r.ok) throw new Error(url + " " + r.status);
         return r.text();
       });
@@ -76,14 +76,10 @@
         try { await loadScript(PHASER[i], 8000); } catch (e) {}
       }
       if (!window.Phaser) { fail("Не загрузился Phaser. Нужен интернет."); return; }
-      msg("Большая карта…");
+      msg("Карта…");
       try {
         var a = await loadText("./game-a.js");
         var pack = "";
-        try {
-          for (var pi=0; pi<8; pi++) pack += await loadText("./game-pack-"+pi+".js") + "\n";
-          pack += await loadText("./game-pack.js");
-        } catch (e) {}
         var art = "";
         try { art = await loadText("./game-art.js"); } catch (e) {}
         var life = "";
