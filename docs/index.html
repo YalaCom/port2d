@@ -26,7 +26,6 @@
     button.px.ghost { background:#2b1d10; }
     button.px.danger { background:#5a1d16; }
     input.px { background:#1a1008; color:#ffe7a3; border:2px solid #c9a36a; font-size:14px; padding:6px; width:110px; }
-    .log { background:#1a1008; padding:8px; min-height:48px; font-size:13px; }
     .chat { background:#1a1008; padding:8px; min-height:120px; max-height:42vh; overflow:auto; font-size:13px; line-height:1.35; margin:8px 0; }
     .bub { margin:6px 0; padding:7px 9px; border:2px solid #7a4e24; }
     .bub.npc { background:#3e2a16; margin-right:18%; }
@@ -51,7 +50,7 @@
     function fail(t) { var e = document.getElementById("boot"); if (e) e.innerHTML = '<div id="err">' + t + "<\/div>"; }
     window.addEventListener("error", function (ev) { fail("Ошибка: " + (ev.message || ev)); });
     function loadText(url) {
-      return fetch(url + "?v=art2", { cache: "no-store" }).then(function (r) {
+      return fetch(url + "?v=art3", { cache: "no-store" }).then(function (r) {
         if (!r.ok) throw new Error(url + " " + r.status);
         return r.text();
       });
@@ -82,7 +81,6 @@
         var a = await loadText("./game-a.js");
         var pack = "";
         try {
-          pack = "";
           for (var pi=0; pi<8; pi++) pack += await loadText("./game-pack-"+pi+".js") + "\n";
           pack += await loadText("./game-pack.js");
         } catch (e) {}
@@ -90,8 +88,11 @@
         try { art = await loadText("./game-art.js"); } catch (e) {}
         var life = "";
         try { life = await loadText("./game-life.js"); } catch (e) {}
+        var life2 = "";
+        try { life2 = await loadText("./game-life2.js"); } catch (e) {}
         var b = await loadText("./game-b.js");
         if (life) b = b.replace("try{new Phaser.Game", life + "\ntry{new Phaser.Game");
+        if (life2) b = b.replace("try{new Phaser.Game", life2 + "\ntry{new Phaser.Game");
         (0, eval)(pack + "\n" + a + "\n" + art + "\n" + b);
       } catch (e) {
         fail("Не собрался код: " + (e && e.message ? e.message : e));
