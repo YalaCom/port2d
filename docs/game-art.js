@@ -1,0 +1,19 @@
+function tex(sc){var g=sc.make.graphics({x:0,y:0,add:false});
+function tile(k,fn,w,h){g.clear();fn(g);g.generateTexture(k,w||16,h||16);}
+tile("t-water",function(gr){gr.fillStyle(0x2a6a96);gr.fillRect(0,0,16,16);gr.fillStyle(0x1c4a72);gr.fillRect(0,3,16,2);gr.fillStyle(0x5aa8cc);gr.fillRect(2,8,7,1);gr.fillRect(8,12,6,1);});
+tile("t-water2",function(gr){gr.fillStyle(0x245e88);gr.fillRect(0,0,16,16);gr.fillStyle(0x1c4a72);gr.fillRect(0,6,16,2);gr.fillStyle(0x5aa8cc);gr.fillRect(4,3,8,1);});
+tile("t-sand",function(gr){gr.fillStyle(0xe0c484);gr.fillRect(0,0,16,16);gr.fillStyle(0xc9a86a);gr.fillRect(2,6,3,1);gr.fillRect(9,3,4,1);gr.fillStyle(0xf0d8a0);gr.fillRect(12,11,2,2);});
+tile("t-dirt",function(gr){gr.fillStyle(0x8a5a30);gr.fillRect(0,0,16,16);gr.fillStyle(0x6a4424);gr.fillRect(2,3,3,2);gr.fillRect(9,10,4,2);gr.fillStyle(0xb07840);gr.fillRect(11,4,2,2);});
+tile("t-grass",function(gr){gr.fillStyle(0x3d8a32);gr.fillRect(0,0,16,16);gr.fillStyle(0x2c6a28);gr.fillRect(2,4,1,4);gr.fillRect(7,9,1,3);gr.fillRect(12,2,1,5);gr.fillStyle(0x68b84a);gr.fillRect(5,1,1,3);gr.fillRect(10,11,1,3);gr.fillStyle(0xe8c84a);gr.fillRect(4,8,2,2);});
+tile("t-wood",function(gr){gr.fillStyle(0x8a5224);gr.fillRect(0,0,16,16);gr.fillStyle(0x4a2810);gr.fillRect(0,4,16,1);gr.fillRect(0,9,16,1);gr.fillRect(0,14,16,1);gr.fillStyle(0xb06a32);gr.fillRect(0,0,16,1);});
+tile("t-block",function(gr){gr.fillStyle(0x3a2a1c);gr.fillRect(0,0,16,16);});
+tile("t-cobble",function(gr){gr.fillStyle(0x524e48);gr.fillRect(0,0,16,16);gr.fillStyle(0x8a867c);gr.fillRect(0,0,7,7);gr.fillStyle(0xa8a498);gr.fillRect(8,0,8,6);gr.fillStyle(0x6e6a62);gr.fillRect(0,8,6,8);gr.fillStyle(0x8a867c);gr.fillRect(7,7,9,9);});
+tile("spr-barrel",function(gr){gr.fillStyle(0x6b3e16);gr.fillRect(4,3,8,12);gr.fillStyle(0x8a5420);gr.fillRect(5,4,6,10);gr.fillStyle(0x2a1a0c);gr.fillRect(4,7,8,2);gr.fillRect(4,11,8,1);});
+function person(k,sh,hair){g.clear();g.fillStyle(0x000000,.25);g.fillEllipse(8,23,7,3);g.fillStyle(0xe6c8a0);g.fillRect(5,3,6,7);g.fillStyle(hair);g.fillRect(5,1,6,4);g.fillStyle(0x2a1a10);g.fillRect(6,6,1,1);g.fillRect(9,6,1,1);g.fillStyle(sh);g.fillRect(4,10,8,8);g.fillStyle(0x3a3a6a);g.fillRect(5,18,3,6);g.fillRect(8,18,3,6);g.fillStyle(0x2a2010);g.fillRect(5,24,3,2);g.fillRect(8,24,3,2);g.generateTexture(k,16,26);}
+person("player",0xc45a3a,0x3a2414);person("npc-a",0x3a6ea5,0x5a3a18);person("npc-b",0x6b3a7a,0x1a1a1a);person("npc-c",0x3d6b32,0x8a6a30);
+tile("spr-house",function(gr){gr.fillStyle(0x000000,.2);gr.fillEllipse(24,44,34,8);gr.fillStyle(0x8a2418);gr.fillTriangle(4,22,24,2,44,22);gr.fillStyle(0xb83424);gr.fillTriangle(10,22,24,6,38,22);gr.fillStyle(0xe6d2a4);gr.fillRect(8,22,32,24);gr.fillStyle(0x7ec8e8);gr.fillRect(11,26,6,6);gr.fillRect(31,26,6,6);gr.fillStyle(0x7a4a22);gr.fillRect(20,32,8,14);gr.fillStyle(0xd4b45a);gr.fillRect(26,38,2,2);},48,48);
+tile("spr-tent",function(gr){gr.fillStyle(0x000000,.2);gr.fillEllipse(16,30,22,6);gr.fillStyle(0xb83220);gr.fillTriangle(2,30,16,6,30,30);gr.fillStyle(0xd04428);gr.fillTriangle(16,6,30,30,16,30);gr.fillStyle(0x4a2814);gr.fillRect(13,20,6,10);},32,32);
+tile("spr-ship",function(gr){gr.fillStyle(0x000000,.18);gr.fillEllipse(32,42,50,8);gr.fillStyle(0x6a3a18);gr.fillRect(6,30,52,12);gr.fillStyle(0x3a2410);gr.fillRect(8,38,48,6);gr.fillStyle(0xc8b078);gr.fillRect(6,30,52,2);gr.fillStyle(0xd8d0c0);gr.fillRect(28,4,3,28);gr.fillStyle(0xf6f0e4);gr.fillTriangle(31,6,54,24,31,24);gr.fillStyle(0xc42a22);gr.fillRect(31,4,8,4);},64,48);
+tile("spr-tavern",function(gr){gr.fillStyle(0x000000,.2);gr.fillEllipse(24,38,36,7);gr.fillStyle(0x4a2a14);gr.fillTriangle(2,16,24,2,46,16);gr.fillStyle(0x7a4a28);gr.fillRect(4,16,40,22);gr.fillStyle(0xffc85a);gr.fillRect(8,20,6,6);gr.fillRect(34,20,6,6);gr.fillStyle(0x5a3418);gr.fillRect(20,24,8,14);},48,40);
+tile("marker",function(gr){gr.lineStyle(1,0xffe08a,1);gr.strokeRect(2,2,12,12);gr.fillStyle(0xffe08a,.35);gr.fillRect(4,4,8,8);});
+g.destroy();}
