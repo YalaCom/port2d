@@ -3,33 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Причал</title>
+  <title>Причал — Port Reseller</title>
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; background: #0c1218; overflow: hidden; font-family: Tahoma, sans-serif; }
+    html, body { margin: 0; padding: 0; overflow: hidden; background: #0c1218; height: 100%; width: 100%; font-family: Tahoma, Geneva, sans-serif; }
+    #boot { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #ffe7a3; z-index: 5; font-size: 16px; text-align: center; padding: 24px; }
     #game-root { width: 100%; height: 100%; }
-    #ui { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
-    #ui button, #ui input { pointer-events: auto; }
-    .hud { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
-    .chip, .hint, .toast, .modal, button.px { background: #2b1d10; color: #f4e6c1; border: 3px solid #c9a36a; font-size: 13px; }
-    .chip { padding: 6px 8px; }
-    .hint { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); padding: 8px 12px; max-width: 92vw; text-align: center; }
-    .toast { position: absolute; top: 56px; left: 50%; transform: translateX(-50%); padding: 8px 12px; }
-    .back { position: absolute; inset: 0; background: #0008; display: flex; align-items: center; justify-content: center; pointer-events: auto; }
-    .modal { width: min(640px, 94vw); max-height: 86vh; overflow: auto; padding: 14px; }
-    .modal h2 { margin: 0 0 8px; font-size: 16px; color: #ffe7a3; }
-    .good { display: flex; justify-content: space-between; gap: 8px; align-items: center; background: #3e2a16; border: 2px solid #7a4e24; padding: 8px; margin: 6px 0; }
-    button.px { padding: 7px 10px; cursor: pointer; }
-    button.px.ghost { background: #1a1008; }
-    input.px { background: #1a1008; color: #ffe7a3; border: 2px solid #c9a36a; width: 72px; padding: 4px; }
-    .row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-    .act { position: absolute; left: 50%; bottom: 56px; transform: translateX(-50%); pointer-events: auto; }
+    #ui-root { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
+    #ui-root button, #ui-root input { pointer-events: auto; }
+    .hud { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
+    .chip { background: #3a2918ee; color: #f4e6c1; border: 3px solid #8b5a2b; padding: 8px 10px; font-size: 13px; line-height: 1.4; box-shadow: 0 3px 0 #1a1008; }
+    .hud-right { margin-left: auto; display: flex; gap: 8px; }
+    .hint { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); background: #1a1008dd; color: #f4e6c1; border: 3px solid #c9a36a; padding: 10px 14px; font-size: 13px; max-width: min(640px, 92vw); text-align: center; line-height: 1.5; }
+    .modal-back { position: absolute; inset: 0; background: #00000088; display: flex; align-items: center; justify-content: center; pointer-events: auto; }
+    .modal { background: #2b1d10; color: #f4e6c1; border: 4px solid #c9a36a; width: min(720px, 94vw); max-height: 88vh; overflow: auto; padding: 16px; box-shadow: 0 8px 0 #1a1008; }
+    .modal h2 { margin: 0 0 12px; font-size: 18px; color: #ffe7a3; }
+    .modal p, .modal li { font-size: 14px; line-height: 1.6; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .goods { display: grid; gap: 8px; margin: 10px 0; }
+    .good { display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: center; background: #3e2a16; border: 2px solid #7a4e24; padding: 8px; }
+    .ico { width: 24px; height: 24px; border: 1px solid #1a1008; }
+    button.px { background: #6b3f18; color: #ffe7a3; border: 3px solid #c9a36a; font-family: inherit; font-size: 13px; padding: 8px 10px; cursor: pointer; }
+    button.px:hover { background: #8a5420; }
+    button.px.ghost { background: #2b1d10; }
+    button.px.danger { background: #5a1d16; }
+    input.px { background: #1a1008; color: #ffe7a3; border: 2px solid #c9a36a; font-family: inherit; font-size: 14px; padding: 6px; width: 80px; }
+    .log { background: #1a1008; padding: 8px; min-height: 48px; font-size: 13px; line-height: 1.5; }
+    .toast { position: absolute; top: 64px; left: 50%; transform: translateX(-50%); background: #1a1008; color: #ffe7a3; border: 3px solid #c9a36a; padding: 8px 12px; font-size: 14px; pointer-events: none; }
+    .interact-btn { position: absolute; left: 50%; bottom: 64px; transform: translateX(-50%); pointer-events: auto; }
+    .enter-prompt { font-size: 11px; color: #9ad0a0; }
+    #err { color: #ffb4a8; white-space: pre-wrap; }
   </style>
 </head>
 <body>
+  <div id="boot">Загрузка «Причала»…</div>
   <div id="game-root"></div>
-  <div id="ui"></div>
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
-  <script src="./game-core.js"></script>
-  <script src="./game-world.js"></script>
+  <div id="ui-root"></div>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/phaser@3.80.1/dist/phaser.min.js'"></script>
+  <script src="./game.js"></script>
 </body>
 </html>
