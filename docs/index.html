@@ -47,7 +47,7 @@
     function fail(t) { var e = document.getElementById("boot"); if (e) e.innerHTML = '<div id="err">' + t + "<\/div>"; }
     window.addEventListener("error", function (ev) { fail("Ошибка: " + (ev.message || ev)); });
     function loadText(url) {
-      return fetch(url + "?v=map4", { cache: "no-store" }).then(function (r) {
+      return fetch(url + "?v=map5", { cache: "no-store" }).then(function (r) {
         if (!r.ok) throw new Error(url + " " + r.status);
         return r.text();
       });
@@ -73,11 +73,13 @@
         try { await loadScript(PHASER[i], 8000); } catch (e) {}
       }
       if (!window.Phaser) { fail("Не загрузился Phaser. Нужен интернет."); return; }
-      msg("Мир порта…");
+      msg("Карта и пиксель-арт…");
       try {
         var a = await loadText("./game-a.js");
+        var art = "";
+        try { art = await loadText("./game-art.js"); } catch (e) {}
         var b = await loadText("./game-b.js");
-        (0, eval)(a + "\n" + b);
+        (0, eval)(a + "\n" + art + "\n" + b);
       } catch (e) {
         fail("Не собрался код: " + (e && e.message ? e.message : e));
       }
